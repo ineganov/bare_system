@@ -1,0 +1,14 @@
+db/
+incremental_db/
+*.rpt
+*.summary
+*.jdi
+*.done
+*.smsg
+*.sof
+*.pin
+PLLJ_PLLSPE_INFO.txt
+soft/disas.txt
+soft/*.o
+soft/*.su
+soft/main
