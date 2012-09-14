@@ -1,0 +1,34 @@
+/* Default linker script, for normal executables */
+OUTPUT_FORMAT("elf32-bigmips", "elf32-bigmips",
+	      "elf32-littlemips")
+OUTPUT_ARCH(mips)
+ENTRY(_start)
+SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
+MEMORY 
+{
+    imem (rx) : ORIGIN = 0, LENGTH = 4K
+    dmem (rw) : ORIGIN = 0x80000000, LENGTH = 256
+}
+SECTIONS
+{
+  .text : {
+    *startup.o(.text)
+    *(.text)
+    *(.text.*)
+/*    . = LENGTH(imem);*/
+  } > imem = 0
+  text_size = SIZEOF(.text);
+  .data : {
+    *(.rodata .rodata.* .gnu.linkonce.r.*)
+    *(.data .data.* .gnu.linkonce.d.*)
+    SORT(CONSTRUCTORS)
+    *(.sdata .sdata.* .gnu.linkonce.s.*)
+    *(.dynsbss)
+    *(.sbss .sbss.* .gnu.linkonce.sb.*)
+    *(.scommon)
+    *(.dynbss)
+    *(.bss .bss.* .gnu.linkonce.b.*)
+    *(COMMON)
+    . = LENGTH(dmem); 
+  } > dmem = 0
+}
